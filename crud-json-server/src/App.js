@@ -1,4 +1,5 @@
 import React from "react";
+import Lists from "./Lists";
 
 class App extends React.Component {
     constructor(props) {
@@ -12,7 +13,27 @@ class App extends React.Component {
         }
       };
     }
+
+    getLists = () => {
+      this.setState({ loading: true });
+      fetch("http://localhost:5000/posts")
+        .then(res => res.json())
+        .then(result => {
+          this.setState({
+            loading: false,
+            alldata: result
+          });
+        })
+        .catch(console.log);
+    }
+  
     render() {
+      const listTable = this.state.loading ? (
+        <span>Loading Data......Please be patient.</span>
+      ) : (
+        <Lists alldata={this.state.alldata} />
+      );
+  
       return (
         <div className="container">
           <span className="title-bar">
@@ -24,10 +45,10 @@ class App extends React.Component {
               Get Lists
             </button>
           </span>
+          {listTable}
         </div>
       );
     }
-    
   }
-
-export default App;
+  
+  export default App;
