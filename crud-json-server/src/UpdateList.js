@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function CreateList(props) {
+function UpdateList(props) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -9,13 +9,16 @@ function CreateList(props) {
 
   return (
     <React.Fragment>
-      <Button variant="primary" onClick={handleShow}>
-        Create New List
+      <Button variant="primary" onClick={() => {
+        handleShow();
+        props.getList(null, props.elementId);
+      }}>
+        Update
       </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>New List</Modal.Title>
+          <Modal.Title>Update List</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <input
@@ -39,8 +42,11 @@ function CreateList(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => { handleClose(); props.createList(); }}>
-            Create
+          <Button variant="primary" onClick={(event) => {
+            handleClose();
+            props.updateList(event, props.elementId);
+          }}>
+            Update
           </Button>
         </Modal.Footer>
       </Modal>
@@ -48,4 +54,4 @@ function CreateList(props) {
   );
 }
 
-export default CreateList;
+export default UpdateList;
